@@ -22,7 +22,7 @@ services:
 
   # Spring Boot Backend REST API Service
   backend:
-    image: dheeraj200579/greenroots-backend:latest
+    image: dheeraj200579/docker-backend-2400032903:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -44,7 +44,7 @@ services:
 
   # React + Vite Frontend Application (Nginx)
   frontend:
-    image: dheeraj200579/greenroots-frontend:latest
+    image: dheeraj200579/docker-frontend-2400032903:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile

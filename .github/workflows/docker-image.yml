@@ -30,7 +30,7 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/greenroots-backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-backend-2400032903:latest
 
       - name: Build and push frontend image
         uses: docker/build-push-action@v5
@@ -38,4 +38,4 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/greenroots-frontend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-frontend-2400032903:latest
