@@ -49,14 +49,9 @@ export default function DeleteModal({ isOpen, event, onClose, onConfirmDelete })
             Delete Plantation Drive?
           </h3>
 
-          <p className="text-muted small mb-3">
+          <p className="text-muted small mb-0">
             Are you sure you want to remove <strong className="text-forest">{event.eventName}</strong> (ID: #{event.id})?
           </p>
-
-          <div className="alert alert-warning text-start small mb-0 rounded-3 p-3">
-            <i className="bi bi-exclamation-triangle-fill text-warning me-1"></i>
-            This will permanently delete this record from PostgreSQL and adjust your aggregate ledger.
-          </div>
         </div>
 
         <div className="gr-modal-footer justify-content-center p-3">
