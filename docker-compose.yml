@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Container
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: greenroots-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: greenroots_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - greenroots-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d greenroots_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot Backend REST API Service
+  backend:
+    image: dheeraj200579/greenroots-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: greenroots-backend
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/greenroots_db
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: docker
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      EUREKA_CLIENT_ENABLED: "false"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - greenroots-net
+
+  # React + Vite Frontend Application (Nginx)
+  frontend:
+    image: dheeraj200579/greenroots-frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: greenroots-frontend
+    restart: on-failure
+    ports:
+      - "80:80"
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - greenroots-net
+
+networks:
+  greenroots-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
